@@ -2,6 +2,9 @@ const express = require("express");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 
+const mongoose = require("mongoose");
+mongoose.connect("mongodb://localhost:27017/test");
+
 const app = express();
 app.use(express.json());
 const httpServer = createServer(app);
