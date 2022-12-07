@@ -7,8 +7,8 @@ export class MessageService extends BaseService<string, any, any, any> {
 
   async create(request: any) {
     return new Promise(async (resolve, reject) => {
-      const user = await super.insertOne("messages", request);
-      resolve(user);
+      await super.insertOne("messages", request);
+      resolve(request);
     });
   }
 }
