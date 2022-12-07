@@ -22,7 +22,7 @@ export class UserController {
   ): Promise<any> => {
     try {
       const user = await this._userService.checkUserExists(request.query);
-      httpResponse.success(response, user, "User created successfully");
+      httpResponse.success(response, user, "User already exists");
     } catch (error: any) {
       httpResponse.error(response, error);
     }

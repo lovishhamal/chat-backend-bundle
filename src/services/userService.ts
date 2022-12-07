@@ -6,6 +6,6 @@ export class UserService extends BaseService<string, any, any, any> {
   }
 
   create = () => {
-    console.log("here woow");
+    super.insertOne("users", { name: "Jack" });
   };
 }

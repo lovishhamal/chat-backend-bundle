@@ -9,15 +9,10 @@ class App {
 
   init() {
     this.app.use(cors());
-    // this.app.use(express.urlencoded({ extended: true }));
-    // this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true, limit: "50mb" }));
     this.app.use(express.json({ limit: "50mb" })); //, extended: true
     this.app.use(express.static(__dirname + "/"));
     this.app.use("/api", router);
-    // swagger.setup(this.app);
-
-    // dbInstance.sync();
   }
 }
 
