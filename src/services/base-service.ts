@@ -12,8 +12,6 @@ export abstract class BaseService<C, I, Q, P> {
     }
   }
   async findOne(collectionName: C, query: any, project?: P): Promise<any> {
-    console.log("qq", query);
-
     try {
       return await dbConnection
         .getMongoDb()

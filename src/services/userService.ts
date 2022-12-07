@@ -11,7 +11,7 @@ export class UserService extends BaseService<string, any, any, any> {
       if (checkUserExists) {
         return reject({ statusCode: 404, message: "User already exists" });
       }
-      const user = super.insertOne("users", request);
+      const user = await super.insertOne("users", request);
       resolve(user);
     });
   }
