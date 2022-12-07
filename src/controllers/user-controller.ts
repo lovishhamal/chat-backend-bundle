@@ -9,20 +9,8 @@ export class UserController {
 
   create = async (request: Request, response: Response): Promise<any> => {
     try {
-      const user = await this._userService.create(request.query);
+      const user = await this._userService.create(request.body);
       httpResponse.success(response, user, "User created successfully");
-    } catch (error: any) {
-      httpResponse.error(response, error);
-    }
-  };
-
-  checkUserExists = async (
-    request: Request,
-    response: Response
-  ): Promise<any> => {
-    try {
-      const user = await this._userService.checkUserExists(request.query);
-      httpResponse.success(response, user, "User already exists");
     } catch (error: any) {
       httpResponse.error(response, error);
     }
