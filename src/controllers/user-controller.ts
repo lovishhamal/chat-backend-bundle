@@ -15,4 +15,13 @@ export class UserController {
       httpResponse.error(response, error);
     }
   };
+
+  login = async (request: Request, response: Response): Promise<any> => {
+    try {
+      const user = await this._userService.login(request.body);
+      httpResponse.success(response, user, "User fetched successfully");
+    } catch (error: any) {
+      httpResponse.error(response, error);
+    }
+  };
 }

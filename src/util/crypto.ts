@@ -13,7 +13,7 @@ export class Bcrypt {
     }
   }
 
-  compareSync(password: string, hash: any) {
+  static compareSync(password: string, hash: any) {
     try {
       return bcrypt.compareSync(password, hash);
     } catch (error: any) {
@@ -21,7 +21,7 @@ export class Bcrypt {
     }
   }
 
-  decode(token: string): Promise<any> {
+  static decode(token: string): Promise<any> {
     return new Promise((resolve, reject) => {
       token = token.replace("Bearer ", "");
       jwt.verify(token, secret, (err: any, decoded: any) => {
