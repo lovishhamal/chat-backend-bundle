@@ -6,6 +6,6 @@ const userRouter = Router();
 const userService = new UserService();
 const userController = new UserController(userService);
 
-userRouter.post("/users/create", userController.create);
+userRouter.post("/user/register", userController.create);
 
 export { userRouter };

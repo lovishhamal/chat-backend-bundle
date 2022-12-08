@@ -9,7 +9,7 @@ dbConnection.initMongoDb((error: Error, dbObj?: any) => {
   if (error) {
     console.log(error);
   } else {
-    const server = app.listen(3000, () => {
+    const server = app.listen(5000, () => {
       const { address, port } = <any>server.address();
       console.log(`Listening at http://${address}:${port}`);
     });
