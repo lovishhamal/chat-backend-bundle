@@ -24,4 +24,13 @@ export class UserController {
       httpResponse.error(response, error);
     }
   };
+
+  findAll = async (request: Request, response: Response): Promise<any> => {
+    try {
+      const user = await this._userService.findAll();
+      httpResponse.success(response, user, "Users fetched successfully");
+    } catch (error: any) {
+      httpResponse.error(response, error);
+    }
+  };
 }

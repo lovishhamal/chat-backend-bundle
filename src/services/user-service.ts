@@ -67,4 +67,11 @@ export class UserService extends BaseService<string, any, any, any> {
       }
     });
   }
+
+  async findAll() {
+    return new Promise(async (resolve, reject) => {
+      const users = await super.findAll("users", {});
+      resolve(users);
+    });
+  }
 }
