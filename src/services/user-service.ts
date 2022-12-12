@@ -1,5 +1,6 @@
 import { Bcrypt } from "../util/crypto";
 import { BaseService } from "./base-service";
+var ObjectID = require("bson-objectid");
 
 export class UserService extends BaseService<string, any, any, any> {
   constructor() {
@@ -68,9 +69,11 @@ export class UserService extends BaseService<string, any, any, any> {
     });
   }
 
-  async findAll() {
+  async findAll(request: any) {
     return new Promise(async (resolve, reject) => {
-      const users = await super.findAll("users", {});
+      const users = await super.findAll("users", {
+        condition: { _id: { $ne: ObjectID(request) } },
+      });
       resolve(users);
     });
   }
