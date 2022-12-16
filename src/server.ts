@@ -1,17 +1,33 @@
 import App from "./loaders/app";
 import express, { Application } from "express";
 import dbConnection from "./connections/mongodb-connection";
+const { createServer } = require("http");
+const { Server } = require("socket.io");
 
 const app: Application = express();
 new App(app).init();
+
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  /* options */
+});
 
 dbConnection.initMongoDb((error: Error, dbObj?: any) => {
   if (error) {
     console.log(error);
   } else {
-    const server = app.listen(5000, () => {
-      const { address, port } = <any>server.address();
-      console.log(`Listening at http://${address}:${port}`);
+    io.on("connection", (socket: any) => {
+      // socket.on("join_room", (data) => {
+      //   socket.join(data);
+      // });
+      socket.emit("initialMessage", { name: "loish" });
+      socket.on("sendMessage", (message: any) => {
+        io.emit("receiveMessage", { ...message });
+      });
+    });
+
+    const server = httpServer.listen(4000, () => {
+      console.log("server connected");
     });
   }
 });
