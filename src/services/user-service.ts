@@ -1,6 +1,6 @@
 import { Bcrypt } from "../util/crypto";
 import { BaseService } from "./base-service";
-var ObjectID = require("bson-objectid");
+var ObjectID = require("mongodb").ObjectID;
 
 export class UserService extends BaseService<string, any, any, any> {
   constructor() {

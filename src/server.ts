@@ -30,7 +30,7 @@ dbConnection.initMongoDb((error: Error, dbObj?: any) => {
       });
     });
 
-    const server = httpServer.listen(4000, () => {
+    const server = httpServer.listen(5000, () => {
       console.log("server connected");
     });
   }

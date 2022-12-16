@@ -15,4 +15,12 @@ export class MessageController {
       httpResponse.error(response, error);
     }
   };
+  findAll = async (request: Request, response: Response): Promise<any> => {
+    try {
+      const user = await this._messageService.findAll(request.params.id);
+      httpResponse.success(response, user, "Messages fetched successfully");
+    } catch (error: any) {
+      httpResponse.error(response, error);
+    }
+  };
 }

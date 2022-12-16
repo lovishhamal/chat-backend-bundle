@@ -1,4 +1,5 @@
 import { BaseService } from "./base-service";
+var ObjectID = require("mongodb").ObjectID;
 
 export class MessageService extends BaseService<string, any, any, any> {
   constructor() {
@@ -9,6 +10,16 @@ export class MessageService extends BaseService<string, any, any, any> {
     return new Promise(async (resolve, reject) => {
       await super.insertOne("messages", request);
       resolve(request);
+    });
+  }
+
+  async findAll(request: any) {
+    return new Promise(async (resolve, reject) => {
+      const response = await super.findAll("messages", {
+        condition: { sentTo: request },
+      });
+
+      resolve(response);
     });
   }
 }
