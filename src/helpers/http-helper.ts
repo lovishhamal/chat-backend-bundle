@@ -6,6 +6,7 @@ class HttpResponse {
     return response.send({
       success: true,
       data,
+      count: Array.isArray(data) ? data.length : 0,
       message,
     });
   }
