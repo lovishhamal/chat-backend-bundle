@@ -1,5 +1,6 @@
 import { Bcrypt } from "../util/crypto";
 import { BaseService } from "./base-service";
+import dbConnection from "../connections/mongodb-connection";
 var ObjectID = require("mongodb").ObjectID;
 
 export class UserService extends BaseService<string, any, any, any> {
@@ -73,6 +74,20 @@ export class UserService extends BaseService<string, any, any, any> {
     return new Promise(async (resolve, reject) => {
       const users = await super.findAll("users", {
         condition: { _id: { $ne: ObjectID(request) } },
+      });
+      resolve(users);
+    });
+  }
+
+  async findFriends(request: any) {
+    return new Promise(async (resolve, reject) => {
+      const users = await super.findAll("users", {
+        condition: {
+          $or: [
+            { email: new RegExp(request) },
+            { userName: new RegExp(request) },
+          ],
+        },
       });
       resolve(users);
     });

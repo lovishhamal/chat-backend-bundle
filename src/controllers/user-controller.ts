@@ -33,4 +33,13 @@ export class UserController {
       httpResponse.error(response, error);
     }
   };
+
+  findFriends = async (request: Request, response: Response): Promise<any> => {
+    try {
+      const user = await this._userService.findFriends(request.query.keyword);
+      httpResponse.success(response, user, "Users fetched successfully");
+    } catch (error: any) {
+      httpResponse.error(response, error);
+    }
+  };
 }

@@ -8,6 +8,7 @@ const userController = new UserController(userService);
 
 userRouter.post("/user/register", userController.create);
 userRouter.post("/user/login", userController.login);
+userRouter.get("/user/findFriends", userController.findFriends);
 userRouter.get("/users/:id", userController.findAll);
 
 export { userRouter };
