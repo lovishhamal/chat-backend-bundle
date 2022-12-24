@@ -49,7 +49,7 @@ export abstract class BaseService<C, I, Q, P> {
       return await dbConnection
         .getMongoDb()
         .collection(collectionName)
-        .findOneAndUpdate(query.id, query.condition);
+        .findOneAndUpdate(query.id, query.condition, { upsert: true });
     } catch (error) {
       throw error;
     }

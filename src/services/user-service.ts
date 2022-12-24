@@ -71,10 +71,18 @@ export class UserService extends BaseService<string, any, any, any> {
   }
 
   async findAll(request: any) {
+    /**needs a lot of code change later */
+
     return new Promise(async (resolve, reject) => {
-      const users = await super.findAll("users", {
-        condition: { connections: { userId: ObjectID(request) } },
+      let users = await super.findAll("users", { condition: {} });
+      const findUser = await super.findOne("connections", {
+        condition: { userId: request },
       });
+
+      users = users.filter((item: any) => {
+        return findUser.connection_ids.includes(item._id.toString());
+      });
+
       resolve(users);
     });
   }
@@ -96,9 +104,12 @@ export class UserService extends BaseService<string, any, any, any> {
 
   async setConnection(request: any) {
     return new Promise(async (resolve, reject) => {
-      const users = await super.findOneAndUpdate("users", {
+      const users = await super.findOneAndUpdate("connections", {
         id: { _id: ObjectID(request.id) },
-        condition: { $push: { connection: request.connectionId } },
+        condition: {
+          $set: { userId: request.id },
+          $push: { connection_ids: request.connectionId?.id },
+        },
       });
       resolve(users);
     });
