@@ -7,6 +7,6 @@ const messageService = new MessageService();
 const messageController = new MessageController(messageService);
 
 messageRouter.post("/message/create", messageController.create);
-messageRouter.get("/message/findAll/:id", messageController.findAll);
+messageRouter.post("/message/findAll", messageController.findAll);
 
 export { messageRouter };

@@ -73,21 +73,32 @@ export class UserService extends BaseService<string, any, any, any> {
   async findAll(request: any) {
     return new Promise(async (resolve, reject) => {
       const users = await super.findAll("users", {
-        condition: { _id: { $ne: ObjectID(request) } },
+        condition: { connections: { userId: ObjectID(request) } },
       });
       resolve(users);
     });
   }
 
-  async findFriends(request: any) {
+  async findFriends(id: string, keyword: string) {
     return new Promise(async (resolve, reject) => {
       const users = await super.findAll("users", {
         condition: {
+          _id: { $ne: ObjectID(id) },
           $or: [
-            { email: new RegExp(request) },
-            { userName: new RegExp(request) },
+            { email: new RegExp(keyword) },
+            { userName: new RegExp(keyword) },
           ],
         },
+      });
+      resolve(users);
+    });
+  }
+
+  async setConnection(request: any) {
+    return new Promise(async (resolve, reject) => {
+      const users = await super.findOneAndUpdate("users", {
+        id: { _id: ObjectID(request.id) },
+        condition: { $push: { connection: request.connectionId } },
       });
       resolve(users);
     });

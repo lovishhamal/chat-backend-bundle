@@ -39,4 +39,19 @@ export abstract class BaseService<C, I, Q, P> {
       throw error;
     }
   }
+
+  async findOneAndUpdate(
+    collectionName: C,
+    query?: any,
+    project?: P
+  ): Promise<any> {
+    try {
+      return await dbConnection
+        .getMongoDb()
+        .collection(collectionName)
+        .findOneAndUpdate(query.id, query.condition);
+    } catch (error) {
+      throw error;
+    }
+  }
 }

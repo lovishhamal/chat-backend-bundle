@@ -23,7 +23,7 @@ dbConnection.initMongoDb((error: Error, dbObj?: any) => {
       // socket.on("join_room", (data) => {
       //   socket.join(data);
       // });
-      socket.emit("initialMessage", { name: "loish" });
+      socket.emit("initialMessage", { Message: "Say Hi ✋" });
       socket.on("sendMessage", async (message: any) => {
         await messageService.create(message);
         io.emit("receiveMessage", { ...message });

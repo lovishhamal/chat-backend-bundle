@@ -36,7 +36,22 @@ export class UserController {
 
   findFriends = async (request: Request, response: Response): Promise<any> => {
     try {
-      const user = await this._userService.findFriends(request.query.keyword);
+      const user = await this._userService.findFriends(
+        request.params.id,
+        request.query.keyword
+      );
+      httpResponse.success(response, user, "Users fetched successfully");
+    } catch (error: any) {
+      httpResponse.error(response, error);
+    }
+  };
+
+  setConnection = async (
+    request: Request,
+    response: Response
+  ): Promise<any> => {
+    try {
+      const user = await this._userService.setConnection(request.body);
       httpResponse.success(response, user, "Users fetched successfully");
     } catch (error: any) {
       httpResponse.error(response, error);
