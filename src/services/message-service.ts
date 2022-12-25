@@ -17,7 +17,7 @@ export class MessageService extends BaseService<string, any, any, any> {
     return new Promise(async (resolve, reject) => {
       const response = await super.findAll("messages", {
         condition: {
-          $and: [{ sentTo: request.sentTo }, { sentBy: request.sentBy }],
+          messageId: request.messageId,
         },
       });
 

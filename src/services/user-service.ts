@@ -1,6 +1,6 @@
 import { Bcrypt } from "../util/crypto";
 import { BaseService } from "./base-service";
-import dbConnection from "../connections/mongodb-connection";
+import { v4 as uuidv4 } from "uuid";
 var ObjectID = require("mongodb").ObjectID;
 
 export class UserService extends BaseService<string, any, any, any> {
@@ -76,13 +76,25 @@ export class UserService extends BaseService<string, any, any, any> {
     return new Promise(async (resolve, reject) => {
       let users = await super.findAll("users", { condition: {} });
 
-      const findUser = await super.findOne("connections", {
+      const connection = await super.findOne("connections", {
         condition: { userId: request },
       });
 
-      if (findUser) {
+      if (connection) {
         users = users.filter((item: any) => {
-          return findUser.connection_ids.includes(item._id.toString());
+          return connection.connection_ids
+            .map((value: any) => value.userId)
+            .includes(item._id.toString());
+        });
+        users = users.map((value: any) => {
+          const connected_user = connection.connection_ids.filter(
+            (item1: any) => item1.userId === value._id.toString()
+          );
+
+          return {
+            ...value,
+            connection: connected_user,
+          };
         });
       } else {
         users = [];
@@ -108,11 +120,20 @@ export class UserService extends BaseService<string, any, any, any> {
 
   async setConnection(request: any) {
     return new Promise(async (resolve, reject) => {
+      const connection_id = uuidv4();
+      const messageId = uuidv4();
       await super.findOneAndUpdate("connections", {
         id: { _id: ObjectID(request.id) },
         condition: {
           $set: { userId: request.id },
-          $push: { connection_ids: request.connectionId?.id },
+
+          $push: {
+            connection_ids: {
+              userId: request.connectionId?.id,
+              connectionId: connection_id,
+              messageId,
+            },
+          },
         },
       });
 
@@ -120,7 +141,14 @@ export class UserService extends BaseService<string, any, any, any> {
         id: { _id: ObjectID(request.connectionId?.id) },
         condition: {
           $set: { userId: request.connectionId?.id },
-          $push: { connection_ids: request.id },
+
+          $push: {
+            connection_ids: {
+              userId: request.id,
+              connectionId: connection_id,
+              messageId,
+            },
+          },
         },
       });
       resolve([]);

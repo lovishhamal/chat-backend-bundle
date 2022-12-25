@@ -14,19 +14,20 @@ const io = new Server(httpServer, {
 });
 
 const messageService = new MessageService();
-
+let connectionId = "";
 dbConnection.initMongoDb((error: Error, dbObj?: any) => {
   if (error) {
     console.log(error);
   } else {
     io.on("connection", (socket: any) => {
-      // socket.on("join_room", (data) => {
-      //   socket.join(data);
-      // });
+      socket.on("connect_user", (data: any) => {
+        socket.join(data.connectionId);
+        connectionId = data.connectionId;
+      });
       socket.emit("initialMessage", { Message: "Say Hi ✋" });
       socket.on("sendMessage", async (message: any) => {
         await messageService.create(message);
-        io.emit("receiveMessage", { ...message });
+        io.emit(connectionId, { ...message });
       });
     });
 

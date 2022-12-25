@@ -9,7 +9,7 @@ const userController = new UserController(userService);
 userRouter.post("/user/register", userController.create);
 userRouter.post("/user/login", userController.login);
 userRouter.get("/user/findFriends/:id", userController.findFriends);
-userRouter.get("/users/:id", userController.findAll);
+userRouter.get("/users/connection/:id", userController.findAll);
 userRouter.post("/user/connection", userController.setConnection);
 
 export { userRouter };
