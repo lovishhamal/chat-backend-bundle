@@ -15,19 +15,34 @@ const io = new Server(httpServer, {
 
 const messageService = new MessageService();
 let connectionId = "";
+const onlineUsers = new Map();
+
+let activeUsers: any = [];
+
 dbConnection.initMongoDb((error: Error, dbObj?: any) => {
   if (error) {
     console.log(error);
   } else {
     io.on("connection", (socket: any) => {
-      socket.on("connect_user", (data: any) => {
-        socket.join(data.connectionId);
-        connectionId = data.connectionId;
+      // add new User
+      socket.on("new-user-add", (newUserId: any) => {
+        // if user is not added previously
+        if (!activeUsers.some((user: any) => user.userId === newUserId)) {
+          activeUsers.push({ userId: newUserId, socketId: socket.id });
+        }
+
+        // send all active users to new user
+        io.emit("get-users", activeUsers);
       });
-      socket.emit("initialMessage", { Message: "Say Hi ✋" });
-      socket.on("sendMessage", async (message: any) => {
-        await messageService.create(message);
-        io.emit(connectionId, { ...message });
+
+      // send message to a specific user
+      socket.on("send_message", async (data: any) => {
+        const { receiverId } = data;
+        const user = activeUsers.find(
+          (user: any) => user.userId === receiverId
+        );
+        await messageService.create(data);
+        io.emit("recieve-message", data);
       });
     });
 
