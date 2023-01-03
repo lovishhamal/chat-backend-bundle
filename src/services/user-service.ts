@@ -1,6 +1,7 @@
 import { Bcrypt } from "../util/crypto";
 import { BaseService } from "./base-service";
 import { v4 as uuidv4 } from "uuid";
+import { connectionType } from "../enums/common";
 var ObjectID = require("mongodb").ObjectID;
 
 export class UserService extends BaseService<string, any, any, any> {
@@ -125,8 +126,7 @@ export class UserService extends BaseService<string, any, any, any> {
       await super.findOneAndUpdate("connections", {
         id: { _id: ObjectID(request.id) },
         condition: {
-          $set: { userId: request.id },
-
+          $set: { userId: request.id, type: connectionType.INDIVIDUAL },
           $push: {
             connection_ids: {
               userId: request.connectionId?.id,
@@ -140,7 +140,10 @@ export class UserService extends BaseService<string, any, any, any> {
       await super.findOneAndUpdate("connections", {
         id: { _id: ObjectID(request.connectionId?.id) },
         condition: {
-          $set: { userId: request.connectionId?.id },
+          $set: {
+            userId: request.connectionId?.id,
+            type: connectionType.INDIVIDUAL,
+          },
 
           $push: {
             connection_ids: {
