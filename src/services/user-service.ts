@@ -126,7 +126,10 @@ export class UserService extends BaseService<string, any, any, any> {
       await super.findOneAndUpdate("connections", {
         id: { _id: ObjectID(request.id) },
         condition: {
-          $set: { userId: request.id, type: connectionType.INDIVIDUAL },
+          $set: {
+            userId: request.id,
+            connection_type: connectionType.INDIVIDUAL,
+          },
           $push: {
             connection_ids: {
               userId: request.connectionId?.id,
@@ -142,7 +145,7 @@ export class UserService extends BaseService<string, any, any, any> {
         condition: {
           $set: {
             userId: request.connectionId?.id,
-            type: connectionType.INDIVIDUAL,
+            connection_type: connectionType.INDIVIDUAL,
           },
 
           $push: {
