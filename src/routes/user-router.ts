@@ -11,5 +11,6 @@ userRouter.post("/user/login", userController.login);
 userRouter.get("/user/findFriends/:id", userController.findFriends);
 userRouter.get("/users/connection/:id", userController.findAll);
 userRouter.post("/user/connection", userController.setConnection);
+userRouter.post("/user/createGroup", userController.createGroupConnection);
 
 export { userRouter };

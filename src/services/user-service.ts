@@ -160,4 +160,8 @@ export class UserService extends BaseService<string, any, any, any> {
       resolve([]);
     });
   }
+
+  async createGroupConnection(request: any) {
+    return new Promise(async (resolve, reject) => {});
+  }
 }

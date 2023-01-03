@@ -52,7 +52,19 @@ export class UserController {
   ): Promise<any> => {
     try {
       const user = await this._userService.setConnection(request.body);
-      httpResponse.success(response, user, "Users fetched successfully");
+      httpResponse.success(response, user, "Connection created successfully");
+    } catch (error: any) {
+      httpResponse.error(response, error);
+    }
+  };
+
+  createGroupConnection = async (
+    request: Request,
+    response: Response
+  ): Promise<any> => {
+    try {
+      const user = await this._userService.createGroupConnection(request.body);
+      httpResponse.success(response, user, "Group created successfully");
     } catch (error: any) {
       httpResponse.error(response, error);
     }
