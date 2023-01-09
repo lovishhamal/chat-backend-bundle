@@ -1,4 +1,4 @@
-export enum connectionType {
-  INDIVIDUAL = "Individual",
-  GROUP = "Group",
+export enum ConnectionType {
+  INDIVIDUAL = "individual",
+  GROUP = "group",
 }

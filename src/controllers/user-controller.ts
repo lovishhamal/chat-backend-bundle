@@ -25,9 +25,12 @@ export class UserController {
     }
   };
 
-  findAll = async (request: Request, response: Response): Promise<any> => {
+  getAllConnection = async (
+    request: Request,
+    response: Response
+  ): Promise<any> => {
     try {
-      const user = await this._userService.findAll(request.params.id);
+      const user = await this._userService.getAllConnection(request.params.id);
       httpResponse.success(response, user, "Users fetched successfully");
     } catch (error: any) {
       httpResponse.error(response, error);

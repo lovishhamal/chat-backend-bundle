@@ -1,7 +1,6 @@
 import { Bcrypt } from "../util/crypto";
 import { BaseService } from "./base-service";
 import { v4 as uuidv4 } from "uuid";
-import { connectionType } from "../enums/common";
 var ObjectID = require("mongodb").ObjectID;
 
 export class UserService extends BaseService<string, any, any, any> {
@@ -71,7 +70,7 @@ export class UserService extends BaseService<string, any, any, any> {
     });
   }
 
-  async findAll(request: any) {
+  async getAllConnection(request: any) {
     /**needs a lot of code change later */
 
     return new Promise(async (resolve, reject) => {
@@ -83,12 +82,12 @@ export class UserService extends BaseService<string, any, any, any> {
 
       if (connection) {
         users = users.filter((item: any) => {
-          return connection.connection_ids
+          return connection.connectionIds
             .map((value: any) => value.userId)
             .includes(item._id.toString());
         });
         users = users.map((value: any) => {
-          const connected_user = connection.connection_ids.filter(
+          const connected_user = connection.connectionIds.filter(
             (item1: any) => item1.userId === value._id.toString()
           );
 
@@ -100,6 +99,7 @@ export class UserService extends BaseService<string, any, any, any> {
       } else {
         users = [];
       }
+
       resolve(users);
     });
   }
@@ -121,19 +121,19 @@ export class UserService extends BaseService<string, any, any, any> {
 
   async setConnection(request: any) {
     return new Promise(async (resolve, reject) => {
-      const connection_id = uuidv4();
+      const connectionId = uuidv4();
       const messageId = uuidv4();
       await super.findOneAndUpdate("connections", {
         id: { _id: ObjectID(request.id) },
         condition: {
           $set: {
             userId: request.id,
-            connection_type: connectionType.INDIVIDUAL,
+            connectionType: request.connectionType,
           },
           $push: {
-            connection_ids: {
+            connectionIds: {
               userId: request.connectionId?.id,
-              connectionId: connection_id,
+              connectionId: connectionId,
               messageId,
             },
           },
@@ -145,13 +145,13 @@ export class UserService extends BaseService<string, any, any, any> {
         condition: {
           $set: {
             userId: request.connectionId?.id,
-            connection_type: connectionType.INDIVIDUAL,
+            connectionType: request.connectionType,
           },
 
           $push: {
-            connection_ids: {
+            connectionIds: {
               userId: request.id,
-              connectionId: connection_id,
+              connectionId: connectionId,
               messageId,
             },
           },
@@ -162,6 +162,14 @@ export class UserService extends BaseService<string, any, any, any> {
   }
 
   async createGroupConnection(request: any) {
-    return new Promise(async (resolve, reject) => {});
+    return new Promise(async (resolve, reject) => {
+      const connectionId = uuidv4();
+      await super.findOneAndUpdate("connections", {
+        id: { _id: ObjectID(request.connectionId?.id) },
+        condition: {
+          $set: { ...request, connectionId },
+        },
+      });
+    });
   }
 }
