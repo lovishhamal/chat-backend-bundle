@@ -15,9 +15,19 @@ export class MessageController {
       httpResponse.error(response, error);
     }
   };
+
   findAll = async (request: Request, response: Response): Promise<any> => {
     try {
       const user = await this._messageService.findAll(request.body);
+      httpResponse.success(response, user, "Messages fetched successfully");
+    } catch (error: any) {
+      httpResponse.error(response, error);
+    }
+  };
+
+  find = async (request: Request, response: Response): Promise<any> => {
+    try {
+      const user = await this._messageService.find(request.body);
       httpResponse.success(response, user, "Messages fetched successfully");
     } catch (error: any) {
       httpResponse.error(response, error);
