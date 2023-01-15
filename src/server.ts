@@ -37,7 +37,7 @@ dbConnection.initMongoDb((error: Error, dbObj?: any) => {
       /** Send message to a specific user */
       socket.on("send_message", async (data: any) => {
         await messageService.create(data);
-        io.emit("recieve-message", data);
+        io.emit("recieve-message", data.message);
       });
 
       /** Call user */
