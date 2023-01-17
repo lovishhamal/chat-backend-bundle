@@ -41,15 +41,12 @@ dbConnection.initMongoDb((error: Error, dbObj?: any) => {
       });
 
       /** Call user */
-      socket.on(
-        "call_user",
-        ({ userToCall, signalData, from, name, caller_id }: any) => {
-          io.emit("call_user", { signal: signalData, from, name, caller_id });
-        }
-      );
+      socket.on("call_user", ({ signalData, data }: any) => {
+        io.emit("call_user", { signal: signalData, data });
+      });
 
-      socket.on("answer_call", (data: any) => {
-        io.emit("call_accepted", data.signal);
+      socket.on("answer_call", ({ signalData }: any) => {
+        io.emit("call_accepted", signalData);
       });
     });
 
