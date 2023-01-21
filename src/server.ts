@@ -17,7 +17,7 @@ const messageService = new MessageService();
 const onlineUsers = new Map();
 
 let activeUsers: any = [];
-
+const rooms: any = {};
 dbConnection.initMongoDb((error: Error, dbObj?: any) => {
   if (error) {
     console.log(error);
@@ -41,12 +41,37 @@ dbConnection.initMongoDb((error: Error, dbObj?: any) => {
       });
 
       /** Call user */
-      socket.on("call_user", ({ offer, data }: any) => {
-        io.emit("incoming_call", { offer, data });
+      // socket.on("call_user", ({ offer, data }: any) => {
+      //   io.emit("incoming_call", { offer, data });
+      // });
+
+      // socket.on("answer_call", ({ answer }: any) => {
+      //   io.emit("call_accepted", answer);
+      // });
+
+      socket.on("join room", (roomID: any) => {
+        if (rooms[roomID]) {
+          rooms[roomID].push(socket.id);
+        } else {
+          rooms[roomID] = [socket.id];
+        }
+        const otherUser = rooms[roomID].find((id: any) => id !== socket.id);
+        if (otherUser) {
+          socket.emit("other user", otherUser);
+          socket.to(otherUser).emit("user joined", socket.id);
+        }
       });
 
-      socket.on("answer_call", ({ answer }: any) => {
-        io.emit("call_accepted", answer);
+      socket.on("offer", (payload: any) => {
+        io.to(payload.target).emit("offer", payload);
+      });
+
+      socket.on("answer", (payload: any) => {
+        io.to(payload.target).emit("answer", payload);
+      });
+
+      socket.on("ice-candidate", (incoming: any) => {
+        io.to(incoming.target).emit("ice-candidate", incoming.candidate);
       });
     });
 
