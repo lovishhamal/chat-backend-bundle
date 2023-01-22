@@ -49,16 +49,19 @@ dbConnection.initMongoDb((error: Error, dbObj?: any) => {
       //   io.emit("call_accepted", answer);
       // });
 
-      socket.on("join_room", (roomID: any) => {
+      socket.on("join_room", (roomID: any, receiver_id: any) => {
         if (rooms[roomID]) {
           rooms[roomID].push(socket.id);
         } else {
           rooms[roomID] = [socket.id];
         }
+
         const otherUser = rooms[roomID].find((id: any) => id !== socket.id);
         if (otherUser) {
           socket.emit("other_user", otherUser);
           socket.to(otherUser).emit("user-joined", socket.id);
+        } else {
+          io.emit("call_user", receiver_id);
         }
       });
 
