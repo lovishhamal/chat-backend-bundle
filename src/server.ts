@@ -14,10 +14,9 @@ const io = new Server(httpServer, {
 });
 
 const messageService = new MessageService();
-const onlineUsers = new Map();
-
 let activeUsers: any = [];
 const rooms: any = {};
+
 dbConnection.initMongoDb((error: Error, dbObj?: any) => {
   if (error) {
     console.log(error);
@@ -49,19 +48,19 @@ dbConnection.initMongoDb((error: Error, dbObj?: any) => {
       //   io.emit("call_accepted", answer);
       // });
 
-      socket.on("join_room", (roomID: any, receiver_id: any) => {
-        if (rooms[roomID]) {
-          rooms[roomID].push(socket.id);
+      socket.on("join_room", (roomId: any, receiverId: any) => {
+        if (rooms[roomId]) {
+          rooms[roomId].push(socket.id);
         } else {
-          rooms[roomID] = [socket.id];
+          rooms[roomId] = [socket.id];
         }
 
-        const otherUser = rooms[roomID].find((id: any) => id !== socket.id);
-        if (otherUser) {
-          socket.emit("other_user", otherUser);
-          socket.to(otherUser).emit("user-joined", socket.id);
+        const participant = rooms[roomId].find((id: any) => id !== socket.id);
+        if (participant) {
+          socket.emit("other_user", participant);
+          socket.to(participant).emit("user-joined", socket.id);
         } else {
-          io.emit("call_user", receiver_id);
+          io.emit("call_user", receiverId);
         }
       });
 
