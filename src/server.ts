@@ -58,6 +58,7 @@ dbConnection.initMongoDb((error: Error, dbObj?: any) => {
         const participant = rooms[connectionId].find(
           (id: any) => id !== socket.id
         );
+
         if (participant) {
           socket.emit("other_user", participant);
           socket.to(participant).emit("user-joined", socket.id);
