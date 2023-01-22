@@ -39,15 +39,6 @@ dbConnection.initMongoDb((error: Error, dbObj?: any) => {
         io.emit("recieve-message", data.message);
       });
 
-      /** Call user */
-      // socket.on("call_user", ({ offer, data }: any) => {
-      //   io.emit("incoming_call", { offer, data });
-      // });
-
-      // socket.on("answer_call", ({ answer }: any) => {
-      //   io.emit("call_accepted", answer);
-      // });
-
       socket.on("join_room", ({ connectionId, receiverInfo }: any) => {
         if (rooms[connectionId]) {
           rooms[connectionId].push(socket.id);
