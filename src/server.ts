@@ -49,7 +49,7 @@ dbConnection.initMongoDb((error: Error, dbObj?: any) => {
       //   io.emit("call_accepted", answer);
       // });
 
-      socket.on("join room", (roomID: any) => {
+      socket.on("join_room", (roomID: any) => {
         if (rooms[roomID]) {
           rooms[roomID].push(socket.id);
         } else {
@@ -57,8 +57,8 @@ dbConnection.initMongoDb((error: Error, dbObj?: any) => {
         }
         const otherUser = rooms[roomID].find((id: any) => id !== socket.id);
         if (otherUser) {
-          socket.emit("other user", otherUser);
-          socket.to(otherUser).emit("user joined", socket.id);
+          socket.emit("other_user", otherUser);
+          socket.to(otherUser).emit("user-joined", socket.id);
         }
       });
 
@@ -70,8 +70,8 @@ dbConnection.initMongoDb((error: Error, dbObj?: any) => {
         io.to(payload.target).emit("answer", payload);
       });
 
-      socket.on("ice-candidate", (incoming: any) => {
-        io.to(incoming.target).emit("ice-candidate", incoming.candidate);
+      socket.on("ice_candidate", (incoming: any) => {
+        io.to(incoming.target).emit("ice_candidate", incoming.candidate);
       });
     });
 
