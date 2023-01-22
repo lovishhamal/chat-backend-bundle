@@ -68,15 +68,15 @@ dbConnection.initMongoDb((error: Error, dbObj?: any) => {
       });
 
       socket.on("offer", (payload: any) => {
-        io.to(payload.target).emit("offer", payload);
+        io.to(payload.receiver).emit("offer", payload);
       });
 
       socket.on("answer", (payload: any) => {
-        io.to(payload.target).emit("answer", payload);
+        io.to(payload.receiver).emit("answer", payload);
       });
 
       socket.on("ice_candidate", (incoming: any) => {
-        io.to(incoming.target).emit("ice_candidate", incoming.candidate);
+        io.to(incoming.receiver).emit("ice_candidate", incoming.candidate);
       });
     });
 
