@@ -60,7 +60,7 @@ dbConnection.initMongoDb((error: Error, dbObj?: any) => {
           socket.emit("other_user", participant);
           socket.to(participant).emit("user-joined", socket.id);
         } else {
-          io.emit("call_user", receiverId);
+          io.emit("call_user", receiverId, roomId);
         }
       });
 
