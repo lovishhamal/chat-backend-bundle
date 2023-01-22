@@ -48,19 +48,21 @@ dbConnection.initMongoDb((error: Error, dbObj?: any) => {
       //   io.emit("call_accepted", answer);
       // });
 
-      socket.on("join_room", (roomId: any, receiverId: any) => {
-        if (rooms[roomId]) {
-          rooms[roomId].push(socket.id);
+      socket.on("join_room", ({ connectionId, receiverInfo }: any) => {
+        if (rooms[connectionId]) {
+          rooms[connectionId].push(socket.id);
         } else {
-          rooms[roomId] = [socket.id];
+          rooms[connectionId] = [socket.id];
         }
 
-        const participant = rooms[roomId].find((id: any) => id !== socket.id);
+        const participant = rooms[connectionId].find(
+          (id: any) => id !== socket.id
+        );
         if (participant) {
           socket.emit("other_user", participant);
           socket.to(participant).emit("user-joined", socket.id);
         } else {
-          io.emit("call_user", receiverId, roomId);
+          io.emit("call_user", { receiverInfo, connectionId });
         }
       });
 
