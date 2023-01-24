@@ -8,14 +8,16 @@ export class ConnectionService extends BaseService<string, any, any, any> {
     super();
   }
 
-  async getAllConnection(request: any) {
+  async getAllConnection(userId: string, connectionId: string | null = null) {
     /**needs a lot of code change later */
 
     return new Promise(async (resolve, reject) => {
-      let users = await super.findAll("users", { condition: {} });
+      let users = await super.findAll("users", {
+        condition: { _id: { $ne: ObjectID(connectionId) } },
+      });
 
       const connection = await super.findOne("connections", {
-        condition: { userId: request },
+        condition: { userId },
       });
 
       if (connection) {
@@ -66,13 +68,13 @@ export class ConnectionService extends BaseService<string, any, any, any> {
         condition: {
           $set: {
             userId: request.id,
-            connectionType: request.connectionType,
           },
           $push: {
             connectionIds: {
               userId: request.connectionId?.id,
               connectionId: connectionId,
               messageId,
+              connectionType: request.connectionType,
             },
           },
         },
@@ -83,13 +85,13 @@ export class ConnectionService extends BaseService<string, any, any, any> {
         condition: {
           $set: {
             userId: request.connectionId?.id,
-            connectionType: request.connectionType,
           },
           $push: {
             connectionIds: {
               userId: request.id,
               connectionId: connectionId,
               messageId,
+              connectionType: request.connectionType,
             },
           },
         },

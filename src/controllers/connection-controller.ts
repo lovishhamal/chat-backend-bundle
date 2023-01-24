@@ -13,7 +13,8 @@ export class ConnectionController {
   ): Promise<any> => {
     try {
       const user = await this._conectionService.getAllConnection(
-        request.params.id
+        request.params.id,
+        request.query?.connectionId
       );
       httpResponse.success(response, user, "Users fetched successfully");
     } catch (error: any) {
