@@ -12,12 +12,18 @@ export class ConnectionService extends BaseService<string, any, any, any> {
 
     return new Promise(async (resolve, reject) => {
       let users = await super.findAll("users", {
-        condition: { _id: { $ne: ObjectID(connectionId) } },
+        condition: { _id: { $ne: ObjectID(userId) } },
       });
 
       const connection = await super.findOne("connections", {
         condition: { userId },
       });
+
+      // const groupConnection = await super.findOne("connections", {
+      //   condition: {
+      //     $or: [{ creatorId: userId }, { connecionIds: { $in: [userId] } }],
+      //   },
+      // });
 
       if (connection) {
         users = users.filter((item: any) => {
@@ -102,10 +108,11 @@ export class ConnectionService extends BaseService<string, any, any, any> {
   async createGroupConnection(request: any) {
     return new Promise(async (resolve, reject) => {
       const connectionId = uuidv4();
+      const messageId = uuidv4();
       await super.findOneAndUpdate("connections", {
         id: { _id: ObjectID(request.connectionId?.id) },
         condition: {
-          $set: { ...request, connectionId },
+          $set: { ...request, connectionId, messageId },
         },
       });
     });
