@@ -27,7 +27,7 @@ export class MessageController {
 
   find = async (request: Request, response: Response): Promise<any> => {
     try {
-      const user = await this._messageService.find(request.body);
+      const user = await this._messageService.find(request.query);
       httpResponse.success(response, user, "Messages fetched successfully");
     } catch (error: any) {
       httpResponse.error(response, error);

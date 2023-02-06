@@ -8,6 +8,6 @@ const messageService = new MessageService();
 const messageController = new MessageController(messageService);
 
 messageRouter.post(routes.messages.create, messageController.create);
-messageRouter.post(routes.messages.find, messageController.find);
+messageRouter.get(routes.messages.find, messageController.find);
 
 export { messageRouter };
