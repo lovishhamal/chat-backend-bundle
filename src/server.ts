@@ -4,6 +4,7 @@ import dbConnection from "./connections/mongodb-connection";
 import { MessageService } from "./services/message-service";
 const { createServer } = require("http");
 const { Server } = require("socket.io");
+const PORT = process.env.PORT || 5000;
 
 const app: Application = express();
 new App(app).init();
@@ -71,7 +72,7 @@ dbConnection.initMongoDb((error: Error, dbObj?: any) => {
       });
     });
 
-    httpServer.listen(5000, () => {
+    httpServer.listen(PORT, () => {
       console.log("server connected");
     });
   }
