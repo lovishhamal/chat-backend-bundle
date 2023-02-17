@@ -1,10 +1,10 @@
 import { MongoClient } from "mongodb";
 
 const username = encodeURIComponent("Lovish");
-const password = encodeURIComponent("<password>");
+const password = encodeURIComponent("w@rtropius12");
 
 const mongoDbUrl =
-  `mongodb+srv://${username}:${password}%12@cluster0.agvoa.mongodb.net/?retryWrites=true&w=majority&ssl=true` ||
+  `mongodb+srv://${username}:${password}@cluster0.agvoa.mongodb.net/?retryWrites=true&w=majority&ssl=true` ||
   `mongodb://localhost:27017`;
 
 let _db: any;
