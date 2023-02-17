@@ -4,7 +4,7 @@ const username = encodeURIComponent("Lovish");
 const password = encodeURIComponent("w@rtropius12");
 
 const mongoDbUrl =
-  `mongodb+srv://${username}:${password}@cluster0.agvoa.mongodb.net/?retryWrites=true&w=majority&ssl=true` ||
+  `mongodb://${username}:${password}@cluster0-shard-00-00.agvoa.mongodb.net:27017,cluster0-shard-00-01.agvoa.mongodb.net:27017,cluster0-shard-00-02.agvoa.mongodb.net:27017/?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority` ||
   `mongodb://localhost:27017`;
 
 let _db: any;
