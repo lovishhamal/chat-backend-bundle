@@ -73,7 +73,7 @@ dbConnection.initMongoDb((error: Error, dbObj?: any) => {
     });
 
     httpServer.listen(PORT, () => {
-      console.log(`server connected -> ${PORT}`);
+      console.log(`server connected 😘 -> ${PORT}`);
     });
   }
 });
