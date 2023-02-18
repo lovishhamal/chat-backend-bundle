@@ -50,6 +50,7 @@ dbConnection.initMongoDb((error: Error, dbObj?: any) => {
         const participant = rooms[connectionId].find(
           (id: any) => id !== socket.id
         );
+        console.log("paprticipant", participant);
 
         if (participant) {
           socket.emit("other_user", participant);
@@ -60,6 +61,8 @@ dbConnection.initMongoDb((error: Error, dbObj?: any) => {
       });
 
       socket.on("offer", (payload: any) => {
+        console.log("offer created", payload.receiver);
+
         io.to(payload.receiver).emit("offer", payload);
       });
 
@@ -70,10 +73,16 @@ dbConnection.initMongoDb((error: Error, dbObj?: any) => {
       socket.on("ice_candidate", (incoming: any) => {
         io.to(incoming.receiver).emit("ice_candidate", incoming.candidate);
       });
+
+      socket.on("call_ended", (payload: any) => {
+        if (rooms.hasOwnProperty(payload.connectionId)) {
+          delete rooms[payload.connectionId];
+        }
+      });
     });
 
     httpServer.listen(PORT, () => {
-      console.log(`server connected 😘 -> ${PORT}`);
+      console.log(`server connected -> ${PORT}`);
     });
   }
 });

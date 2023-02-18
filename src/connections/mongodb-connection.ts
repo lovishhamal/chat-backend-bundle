@@ -28,8 +28,7 @@ const getMongoDb = () => {
   if (!_db) {
     throw Error("Database not initialzed");
   }
-  console.log("db initialized");
-  
+
   return _db;
 };
 
