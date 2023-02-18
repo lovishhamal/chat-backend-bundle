@@ -50,7 +50,6 @@ dbConnection.initMongoDb((error: Error, dbObj?: any) => {
         const participant = rooms[connectionId].find(
           (id: any) => id !== socket.id
         );
-        console.log("paprticipant", participant);
 
         if (participant) {
           socket.emit("other_user", participant);
@@ -61,8 +60,6 @@ dbConnection.initMongoDb((error: Error, dbObj?: any) => {
       });
 
       socket.on("offer", (payload: any) => {
-        console.log("offer created", payload.receiver);
-
         io.to(payload.receiver).emit("offer", payload);
       });
 
@@ -78,6 +75,7 @@ dbConnection.initMongoDb((error: Error, dbObj?: any) => {
         if (rooms.hasOwnProperty(payload.connectionId)) {
           delete rooms[payload.connectionId];
         }
+        io.emit("call_ended", { connectionId: payload.connectionId });
       });
     });
 
