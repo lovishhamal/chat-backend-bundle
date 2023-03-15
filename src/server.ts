@@ -2,8 +2,11 @@ import App from "./loaders/app";
 import express, { Application } from "express";
 import dbConnection from "./connections/mongodb-connection";
 import { MessageService } from "./services/message-service";
+import * as dotenv from "dotenv";
 const { createServer } = require("http");
 const { Server } = require("socket.io");
+
+dotenv.config();
 const PORT = process.env.PORT || 5000;
 
 const app: Application = express();
