@@ -40,6 +40,11 @@ dbConnection.initMongoDb((error: Error, dbObj?: any) => {
         io.emit("recieve-message", data.message);
       });
 
+      socket.on("user-input", async (data: any) => {
+        io.emit("user-input", data);
+      });
+
+      /** media connection starts here */
       socket.on("join_room", ({ connectionId, receiverInfo }: any) => {
         if (rooms[connectionId]) {
           rooms[connectionId].push(socket.id);

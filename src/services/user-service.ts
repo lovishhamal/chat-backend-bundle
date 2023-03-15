@@ -60,7 +60,8 @@ export class UserService extends BaseService<string, any, any, any> {
           user.password
         );
         if (isPasswordMatched) {
-          resolve(user);
+          const fullName = user.userName?.split(" ");
+          resolve({ ...user, firstName: fullName[0], lastName: fullName[1] });
         } else {
           reject({ statusCode: 400, message: "Password donot match" });
         }
