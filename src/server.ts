@@ -1,5 +1,5 @@
-import App from "./loaders/app";
 import express, { Application } from "express";
+import App from "./loaders/app";
 import dbConnection from "./connections/mongodb-connection";
 import { MessageService } from "./services/message-service";
 import * as dotenv from "dotenv";
