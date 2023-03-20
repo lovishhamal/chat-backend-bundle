@@ -47,6 +47,10 @@ dbConnection.initMongoDb((error: Error, dbObj?: any) => {
         io.emit("user-input", data);
       });
 
+      socket.on("video_paused", (data: any) => {
+        io.emit("video_paused", data);
+      });
+
       /** media connection starts here */
       socket.on("join_room", ({ connectionId, receiverInfo }: any) => {
         if (rooms[connectionId]) {
