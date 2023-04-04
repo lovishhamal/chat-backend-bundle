@@ -3,7 +3,7 @@ import { MongoClient } from "mongodb";
 const username = encodeURIComponent("Lovish");
 const password = encodeURIComponent("w@rtropius12");
 
-const mongo: any = process.env.MONGO_URI?.replace("username", username).replace(
+const mongo = process.env.MONGO_URI?.replace("username", username).replace(
   "password",
   password
 );
@@ -16,7 +16,7 @@ const initMongoDb = (callback: any) => {
     console.log("DB initialized");
     return callback(null, _db);
   }
-  MongoClient.connect(mongo)
+  MongoClient.connect(mongoDbUrl)
     .then((client) => {
       _db = client.db("dwf");
       callback(null, _db);

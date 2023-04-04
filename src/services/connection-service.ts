@@ -1,3 +1,4 @@
+import { ConnectionType } from "../enums/common";
 import { BaseService } from "./base-service";
 import { v4 as uuidv4 } from "uuid";
 var ObjectID = require("mongodb").ObjectID;
@@ -17,6 +18,14 @@ export class ConnectionService extends BaseService<string, any, any, any> {
 
       const connection = await super.findOne("connections", {
         condition: { userId },
+      });
+
+      const group_connection = await super.findAll("connections", {
+        condition: { connectionType: ConnectionType.GROUP },
+      });
+
+      const get_group_connection = group_connection.filter((item: any) => {
+        return item.connectionIds.includes(userId);
       });
 
       // const groupConnection = await super.findOne("connections", {
@@ -45,7 +54,7 @@ export class ConnectionService extends BaseService<string, any, any, any> {
         users = [];
       }
 
-      resolve(users);
+      resolve(get_group_connection.concat(users));
     });
   }
 
@@ -112,9 +121,10 @@ export class ConnectionService extends BaseService<string, any, any, any> {
       await super.findOneAndUpdate("connections", {
         id: { _id: ObjectID(request.connectionId?.id) },
         condition: {
-          $set: { ...request, connectionId, messageId },
+          $set: { ...request, connectionId, messageId, displayName: "friends" },
         },
       });
+      resolve("success");
     });
   }
 }
