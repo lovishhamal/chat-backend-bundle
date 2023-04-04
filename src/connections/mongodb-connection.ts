@@ -16,7 +16,7 @@ const initMongoDb = (callback: any) => {
     console.log("DB initialized");
     return callback(null, _db);
   }
-  MongoClient.connect(mongoDbUrl)
+  MongoClient.connect(mongo ?? "")
     .then((client) => {
       _db = client.db("dwf");
       callback(null, _db);
