@@ -1,7 +1,7 @@
 import { MongoClient } from "mongodb";
 
 const username = encodeURIComponent(process.env.USERNAME);
-const password = encodeURIComponent(process.env.PASSWORD);
+const password = encodeURIComponent(process.env.PASSWORDen);
 
 const mongo = process.env.MONGO_URI?.replace("username", username).replace(
   "password",
